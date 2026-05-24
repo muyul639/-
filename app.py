@@ -491,13 +491,19 @@ async def buckshot(interaction: discord.Interaction, 상대1: discord.Member, �
     await interaction.response.send_message(embed=view.create_embed("🎮 게임 시작!"), view=view)
     view.main_message = await interaction.original_response()
 
+import time # 맨 위에 import 하거나, 여기에 추가하세요
+
 @bot.event
 async def on_ready():
     await bot.tree.sync()
     print(f'✅ {bot.user.name} 룰렛 온라인')
 
-keep_alive() # 이 줄을 봇 실행 코드 바로 위에 추가하세요!
+# 1. 서버를 먼저 띄웁니다
+keep_alive() 
 
+# 2. 서버가 포트를 확실하게 열 때까지 0.5초만 기다립니다
+time.sleep(0.5) 
+
+# 3. 그 다음에 봇을 로그인시킵니다
 TOKEN = os.environ.get("DISCORD_TOKEN")
 bot.run(TOKEN)
-
