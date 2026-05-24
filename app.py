@@ -10,11 +10,8 @@ from keep_alive import keep_alive
 # .env 파일에서 환경 변수 불러오기
 load_dotenv()
 
-# 1. 봇 설정
-intents = discord.Intents.default()
-intents.message_content = True
-intents.members = True
-bot = commands.Bot(command_prefix='!', intents=intents)
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 # --- [이름 정제 함수] ---
 def clean_name(member: discord.Member) -> str:
@@ -498,12 +495,9 @@ async def on_ready():
     await bot.tree.sync()
     print(f'✅ {bot.user.name} 룰렛 온라인')
 
-# 1. 서버를 먼저 띄웁니다
 keep_alive() 
 
-# 2. 서버가 포트를 확실하게 열 때까지 0.5초만 기다립니다
 time.sleep(0.5) 
 
-# 3. 그 다음에 봇을 로그인시킵니다
 TOKEN = os.environ.get("DISCORD_TOKEN")
-bot.run(TOKEN)
+bot.run(TOKEN, reconnect=True)
