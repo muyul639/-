@@ -115,9 +115,9 @@ class BuckshotView(discord.ui.View):
             if hp_val > 0:
                 if self.game.items[p]:
                     emojis_only = " ".join([item.split(" ")[0] for item in self.game.items[p]])
-                    item_str = f"`아이템: {emojis_only}`"
+                    item_str = f"`{emojis_only}`"
                 else:
-                    item_str = f"`아이템: 없음`"
+                    item_str = f"`아이템 없음`"
             else:
                 item_str = f"`🪦 사망`"
             
