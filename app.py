@@ -490,14 +490,14 @@ async def buckshot(interaction: discord.Interaction, 상대1: discord.Member, �
 
 import time # 맨 위에 import 하거나, 여기에 추가하세요
 
+# 기존의 keep_alive() 호출 및 time.sleep 코드 삭제
+# @bot.event on_ready 아래에 있는 토큰 실행 부분만 남깁니다.
+
 @bot.event
 async def on_ready():
     await bot.tree.sync()
     print(f'✅ {bot.user.name} 룰렛 온라인')
 
-keep_alive() 
-
-time.sleep(0.5) 
-
-TOKEN = os.environ.get("DISCORD_TOKEN")
-bot.run(TOKEN, reconnect=True)
+if __name__ == "__main__":
+    TOKEN = os.environ.get("DISCORD_TOKEN")
+    bot.run(TOKEN, reconnect=True)
