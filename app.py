@@ -5,9 +5,7 @@ import random
 import re
 import os
 from dotenv import load_dotenv
-from keep_alive import keep_alive
 
-# .env 파일에서 환경 변수 불러오기
 load_dotenv()
 
 intents = discord.Intents.all()
@@ -500,4 +498,4 @@ async def on_ready():
 
 if __name__ == "__main__":
     TOKEN = os.environ.get("DISCORD_TOKEN")
-    bot.run(TOKEN, reconnect=True)
+    bot.run(TOKEN)
