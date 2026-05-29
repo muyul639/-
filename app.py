@@ -104,7 +104,7 @@ class BuckshotView(discord.ui.View):
         # 각 플레이어의 정보를 '필드(Field)'로 분리하여 추가합니다.
         for i, p in enumerate(self.game.players):
             hp_val = self.game.hp[p]
-            hp_bar = "❤️" * max(0, hp_val) + "🖤" * (self.game.max_hp - max(0, hp_val))
+            hp_bar = "⚡" * max(0, hp_val) + "ㅤ" * (self.game.max_hp - max(0, hp_val))
             handcuff = "⛓️‍💥" if p in self.game.skip_list else ""
             
             if hp_val > 0:
