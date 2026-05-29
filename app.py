@@ -95,13 +95,13 @@ class BuckshotView(discord.ui.View):
         desc = f"{self.game.load_info_text}\n"
         desc += f"📦 **남은 총탄:** {remaining_shells}발\n"
         desc += f"---------------------------------------\n\n"
-        desc += f"{action_text}"
+        
+        # 여기서 \n을 하나만 넣으면 필드와 적절한 간격(엔터 한번 정도)이 유지됩니다.
+        desc += f"{action_text}\n" 
 
         embed = discord.Embed(title="-----------------🏴‍☠️------------------", 
                               description=desc, 
                               color=discord.Color.dark_red())
-        
-        embed.add_field(name="\u200b", value="\u200b", inline=False)
         
         # 각 플레이어의 정보를 '필드(Field)'로 분리하여 추가합니다.
         for i, p in enumerate(self.game.players):
