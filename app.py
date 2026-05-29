@@ -95,7 +95,7 @@ class BuckshotView(discord.ui.View):
         desc = f"{self.game.load_info_text}\n"
         desc += f"📦 **남은 총탄:** {remaining_shells}발\n"
         desc += f"---------------------------------------\n\n"
-        desc += f"{action_text}\n"
+        desc += f"{action_text}\n\n"
 
         embed = discord.Embed(title="-----------------🏴‍☠️------------------", 
                               description=desc, 
