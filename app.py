@@ -69,20 +69,15 @@ class BuckshotGame:
         if len(self.alive_players) <= 1:
             return
             
-        # [수정된 부분] 턴 계산 로직 단순화 및 안전화
-        if not current_player_removed:
-            self.current_idx = (self.current_idx + self.direction) % len(self.alive_players)
-        else:
-            self.current_idx %= len(self.alive_players)
+        self.current_idx = (self.current_idx + self.direction) % len(self.alive_players)
 
-        # 스킵 처리
         limit = len(self.alive_players)
         count = 0
         while self.alive_players[self.current_idx] in self.skip_list and count < limit:
             self.skip_list.remove(self.alive_players[self.current_idx])
             self.current_idx = (self.current_idx + self.direction) % len(self.alive_players)
             count += 1
-
+            
 # --- [메인 뷰: 메인 메뉴] ---
 class BuckshotView(discord.ui.View):
     def __init__(self, game):
@@ -184,17 +179,17 @@ class BuckshotView(discord.ui.View):
             t_name = clean_name(target)
             shell = self.game.shells.pop(0)
             
-            is_dead = False # [수정된 부분] 사망 여부 변수 추가
+            is_dead = False # 1. 사망 여부 변수 생성
             if shell == '🔴 실탄':
                 self.game.hp[target] -= self.game.dmg
                 res = f"💥 **탕!** **{t_name}**님이 **{u_name}**님의 **실탄**({self.game.dmg}뎀)에 맞았습니다!"
                 if self.game.hp[target] <= 0: 
                     self.game.alive_players.remove(target)
-                    is_dead = True # 사망 시 True
+                    is_dead = True # 2. 사망 시 True로 변경
             else:
                 res = f"💨 **탕!** **{t_name}**님은 *공포탄*에 맞았습니다!"
-                
-            # [수정된 부분] is_dead를 전달
+            
+            # 3. 인자로 is_dead 전달
             self.game.next_turn(shot_fired=True, current_player_removed=is_dead)
             await self.update_game_state(interaction, res)
         else:
@@ -251,15 +246,21 @@ class TargetSelectView(discord.ui.View):
             u_name = clean_name(interaction.user)
             t_name = clean_name(target)
             
+            # --- [수정된 부분: shoot action] ---
             if self.action_type == "shoot":
                 shell = self.game.shells.pop(0)
+                is_dead = False  # 1. 사망 여부를 기록할 변수 초기화
+                
                 if shell == '🔴 실탄':
                     self.game.hp[target] -= self.game.dmg
                     res = f"💥 **탕!** **{t_name}**님이 **{u_name}**님의 **실탄**에 맞았습니다!"
-                    if self.game.hp[target] <= 0: self.game.alive_players.remove(target)
+                    if self.game.hp[target] <= 0: 
+                        self.game.alive_players.remove(target)
+                        is_dead = True
                 else:
                     res = f"💨 **탕!** **{t_name}**님은 *공포탄*에 맞았습니다!"
-                self.game.next_turn(shot_fired=True, current_player_removed=False)
+                self.game.next_turn(shot_fired=True, current_player_removed=is_dead)
+
             elif self.action_type == "handcuff":
                 self.game.items[interaction.user].pop(self.item_idx)
                 if target not in self.game.skip_list: self.game.skip_list.append(target)
